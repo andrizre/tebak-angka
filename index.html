@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tebak Angka 1-100</title>
+<style>
+*{box-sizing:border-box;font-family:system-ui,sans-serif}
+body{background:#0f172a;color:#e2e8f0;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
+.card{background:#1e293b;padding:2rem;border-radius:16px;width:min(92vw,400px);text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+h1{margin:0 0 .25rem;font-size:1.4rem}
+p.sub{color:#94a3b8;font-size:.9rem;margin:0 0 1rem}
+input{width:100%;padding:.7rem;font-size:1.2rem;text-align:center;border-radius:10px;border:2px solid #334155;background:#0f172a;color:#fff;margin-bottom:.75rem}
+button{width:100%;padding:.7rem;font-size:1rem;font-weight:700;border:0;border-radius:10px;background:#22c55e;color:#052e16;cursor:pointer}
+button:hover{background:#4ade80}
+button.reset{background:#334155;color:#e2e8f0;margin-top:.5rem}
+#msg{min-height:2.2em;margin:.75rem 0;font-weight:600}
+.score{color:#94a3b8;font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Tebak Angka 1-100</h1>
+<p class="sub">7x kesempatan. Skor = sisa nyawa x 10.</p>
+<div id="msg">Aku sudah mikir satu angka... tebak!</div>
+<input id="in" type="number" min="1" max="100" placeholder="1 - 100">
+<button onclick="tebak()">Tebak!</button>
+<button class="reset" onclick="baru()">Main Lagi</button>
+<p class="score" id="info">Nyawa: 7 | Tebakan: 0</p>
+</div>
+<script>
+let target, nyawa, jumlah;
+function baru(){target=Math.floor(Math.random()*100)+1;nyawa=7;jumlah=0;
+document.getElementById('msg').textContent='Aku sudah mikir satu angka... tebak!';
+upd();}
+function upd(){document.getElementById('info').textContent='Nyawa: '+nyawa+' | Tebakan: '+jumlah;}
+function tebak(){
+const el=document.getElementById('in'),m=document.getElementById('msg');
+let v=parseInt(el.value,10);
+if(!v||v<1||v>100){m.textContent='Masukkan angka 1-100 dulu!';return;}
+jumlah++;nyawa--;
+if(v===target){m.textContent='BENAR! Angkanya '+target+'. Skor: '+((nyawa+1)*10)+' ('+jumlah+'x tebak)';}
+else if(nyawa<=0){m.textContent='Game over! Angkanya '+target+'. Klik Main Lagi.';}
+else if(v<target){m.textContent=v+' kekecilan! ('+nyawa+' nyawa sisa)';}
+else{m.textContent=v+' kebesaran! ('+nyawa+' nyawa sisa)';}
+el.value='';el.focus();upd();
+}
+baru();
+document.getElementById('in').addEventListener('keydown',function(e){if(e.key==='Enter')tebak();});
+</script>
+</body>
+</html>
